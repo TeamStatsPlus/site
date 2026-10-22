@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TeamStatsPlus – Live stats sites for league operators</title>
+<meta name="description" content="Turn the standings, schedules and player stats your league already keeps into a fast, mobile-friendly website for every division. Updates automatically. Built for darts, pool, bowling and more.">
+<meta property="og:title" content="TeamStatsPlus – Live stats sites for league operators"><meta property="og:description" content="A mobile-first stats website for every division in your league, updated automatically."><meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e141f'/%3E%3Crect x='6' y='16' width='5' height='10' rx='1.5' fill='%23ef6a5f'/%3E%3Crect x='13.5' y='10' width='5' height='16' rx='1.5' fill='%236aa8f2'/%3E%3Crect x='21' y='5' width='5' height='21' rx='1.5' fill='%235cc596'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#0e1623;--mute:#566174;--line:#e1e5ea;--acc:#c8372d;--btnc:#fff;--grn:#1f7a56;--soft:#eceff3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1018;--card:#131b28;--ink:#e9eef6;--mute:#9aa7ba;--line:#223046;--acc:#ef6a5f;--btnc:#1b0d0b;--grn:#5cc596;--soft:#1a2535}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+h1,h2,h3{line-height:1.15;margin:0;letter-spacing:-.02em}a{color:inherit}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--card);padding:8px 12px;z-index:40}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:20px;height:64px}.logo{font-weight:800;font-size:20px;text-decoration:none;display:flex;gap:8px;align-items:center}
+.bar nav{display:flex;gap:22px;margin-left:auto;align-items:center}.bar nav a{text-decoration:none;color:var(--mute);font-weight:500}.bar nav a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--acc);color:var(--btnc);border:0;border-radius:10px;padding:13px 22px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer;min-height:44px}
+.btn.alt{background:transparent;color:inherit;border:1px solid currentColor}.btn:hover{filter:brightness(1.08)}
+.hero{background:#0e141f;color:#eef2f8;padding:64px 0 72px;overflow:hidden}
+.hero .w{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.eyebrow{color:#ef6a5f;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.hero h1{font-size:clamp(34px,5.4vw,58px);font-weight:800;margin:10px 0 16px}.hero p.lead{font-size:19px;color:#b8c3d4;max-width:540px;margin:0 0 26px}
+.hero .btn.alt{color:#eef2f8}.cta{display:flex;gap:12px;flex-wrap:wrap}
+.phone{justify-self:center;width:280px;background:#161f2e;border:1px solid #2a3850;border-radius:34px;padding:14px;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.screen{background:#0e141f;border-radius:22px;padding:16px;color:#eef2f8}.screen small{color:#94a3b8}.screen h3{font-size:18px;margin:2px 0 10px}
+.tr{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:8px 0;border-top:1px solid #223046;font-size:14px}.tr i{grid-column:1/-1;height:5px;border-radius:3px;background:#223046;overflow:hidden}.tr i b{display:block;height:100%;background:#6aa8f2}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:-34px;position:relative}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}.fact b{display:block;font-size:18px}.fact span{color:var(--mute);font-size:14px}
+section{padding:72px 0}.sh{max-width:640px;margin-bottom:36px}.sh h2{font-size:clamp(28px,4vw,40px);font-weight:800}.sh p{color:var(--mute);font-size:18px;margin:12px 0 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}.card h3{font-size:18px;margin:10px 0 6px}.card p{margin:0;color:var(--mute);font-size:15px}
+.ic{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;font-size:22px}
+.steps{counter-reset:s}.steps .card{position:relative;padding-top:54px}.steps .card::before{counter-increment:s;content:counter(s);position:absolute;top:16px;left:22px;width:30px;height:30px;border-radius:50%;background:var(--acc);color:var(--btnc);display:grid;place-items:center;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{border:1px solid var(--line);background:var(--card);border-radius:22px;padding:8px 16px;font-weight:600}.chip.live{border-color:var(--grn);color:var(--grn)}
+.demo{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+.dt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.dt button{border:1px solid var(--line);background:var(--bg);color:inherit;border-radius:20px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer;min-height:44px}
+.dt button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}.dt .sp{flex:1}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;white-space:nowrap}th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}th{font-size:13px;color:var(--mute)}th:first-child,td:first-child{text-align:left}
+.bb{display:inline-block;width:70px;height:6px;background:var(--soft);border-radius:4px;vertical-align:middle;margin-left:8px}.bb i{display:block;height:100%;background:var(--grn);border-radius:4px}
+.lg{width:28px;height:28px;flex:none}.dt .lbl{align-self:center;color:var(--mute);font-weight:600;font-size:14px}.dt.tabs button{border-radius:8px}.mini{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}.sb{all:unset;cursor:pointer;font-weight:600}.sb:focus-visible{outline:3px solid var(--acc);outline-offset:2px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}.li{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}.li:first-child{border-top:0}.li span{color:var(--mute)}.dt input{flex:1;min-width:180px;font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}.dt select{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:44px}
+.note{color:var(--mute);font-size:13px;margin:12px 0 0}
+.price{display:flex;flex-direction:column}.price .amt{font-size:36px;font-weight:800;margin:8px 0}.price .amt small{font-size:15px;color:var(--mute);font-weight:500}.price ul{padding:0;margin:14px 0 22px;list-style:none;color:var(--mute);font-size:15px;flex:1}.price li{padding:5px 0 5px 24px;position:relative}.price li::before{content:"✓";position:absolute;left:0;color:var(--grn);font-weight:800}
+.price.pop{border:2px solid var(--acc)}.tag{align-self:flex-start;background:var(--acc);color:var(--btnc);font-size:12px;font-weight:700;border-radius:12px;padding:2px 10px}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:10px}summary{font-weight:700;cursor:pointer;min-height:24px}details p{color:var(--mute);margin:10px 0 0}
+.contact{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:start}
+form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:grid;gap:5px;font-weight:600;font-size:14px}label.full,.full{grid-column:1/-1}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px;min-height:44px;width:100%}
+textarea{min-height:96px;resize:vertical}.hp{position:absolute;left:-9999px}#fs{min-height:24px;font-weight:600}
+footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mute);font-size:14px}footer .w{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap}
+@media(max-width:820px){.g2{grid-template-columns:1fr}.bar{gap:10px}.logo{font-size:17px}.bar nav .btn{padding:10px 12px;font-size:14px}.hero .w,.contact{grid-template-columns:1fr}.phone{display:none}.grid,.facts{grid-template-columns:1fr}.bar nav a:not(.btn){display:none}.facts{margin-top:-24px}section{padding:52px 0}form{grid-template-columns:1fr}.hero{padding:44px 0 56px}}
+</style></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="w bar"><a class="logo" href="#top"><svg class="lg" viewBox="0 0 28 28" aria-hidden="true"><rect x="3" y="15" width="6" height="10" rx="1.5" style="fill:var(--acc)"/><rect x="11" y="9" width="6" height="16" rx="1.5" style="fill:var(--grn)"/><rect x="19" y="3" width="6" height="22" rx="1.5" style="fill:var(--ink)"/></svg><span data-brand>TeamStatsPlus</span></a>
+<nav aria-label="Main"><a href="#features">Features</a><a href="#how">How it works</a><a href="#demo">Demo</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a class="btn" href="#contact">Request a demo</a></nav></div></header>
+<main id="main"><div id="top"></div>
+<div class="hero"><div class="w"><div><div class="eyebrow">For league operators</div>
+<h1>Your league’s stats, always current, on every player’s phone.</h1>
+<p class="lead"><span data-brand>TeamStatsPlus</span> turns the standings, schedules and player stats you already keep into a fast, mobile-first website for every division. It updates automatically, with no extra data entry.</p>
+<div class="cta"><a class="btn" href="#contact">Request a demo</a><a class="btn alt" href="#demo">Try the live demo</a></div></div>
+<div class="phone" aria-hidden="true"><div class="screen"><small>2026–2027 · Week 6 · 8 teams</small><h3>Thursday · Division A</h3>
+<div class="tr"><span>🥇 Bull Runners</span><b>78%</b><i><b style="width:78%"></b></i></div><div class="tr"><span>🥈 Triple Threat</span><b>71%</b><i><b style="width:71%"></b></i></div><div class="tr"><span>🥉 Oche Ness</span><b>63%</b><i><b style="width:63%"></b></i></div><div class="tr"><span>Flight Club</span><b>52%</b><i><b style="width:52%"></b></i></div><div class="tr"><span>Last Orders</span><b>38%</b><i><b style="width:38%"></b></i></div></div></div></div></div>
+<div class="w"><div class="facts"><div class="fact"><b>Refreshes every hour</b><span>Or on your schedule. No one retypes a score.</span></div><div class="fact"><b>One link and QR code per division</b><span>Print it, post it, text it.</span></div><div class="fact"><b>Installs like an app</b><span>Add to Home Screen. No app store, no accounts.</span></div></div></div>
+
+<section id="features"><div class="w"><div class="sh"><h2>Everything players ask about, one tap away</h2><p>Players don’t need to reach out for info. One link with everything they need.</p></div>
+<div class="grid">
+<div class="card"><div class="ic">🗂️</div><h3>Every division, one place</h3><p>Pick season, night and division from one selector. Players save their leagues and jump back in a tap.</p></div>
+<div class="card"><div class="ic">📊</div><h3>Standings and player stats</h3><p>Sortable stat tables, rank medals, win percentages and a Most Improved board that fills in as the season goes.</p></div>
+<div class="card"><div class="ic">📅</div><h3>Schedules and locations</h3><p>See the next match night, opponents, venues with map links, and tap-to-call captain phone numbers.</p></div>
+<div class="card"><div class="ic">⭐</div><h3>My Team</h3><p>Players pick their team once. The site remembers it and shows their next match, record and teammates.</p></div>
+<div class="card"><div class="ic">📱</div><h3>Built for phones first</h3><p>Tables that scroll with the name pinned in place, large tap targets, light and dark themes, and offline support.</p></div>
+<div class="card"><div class="ic">🔄</div><h3>Updates itself</h3><p>Connects to your scoring system on a schedule and republishes when numbers change. If a source hiccups, the last good data stays up.</p></div>
+</div></div></section>
+
+<section id="how" style="background:var(--card);border-block:1px solid var(--line)"><div class="w"><div class="sh"><h2>Live in three steps</h2><p>You keep scoring the way you do today. We handle the rest.</p></div>
+<div class="grid steps"><div class="card"><h3>Connect your scoring system</h3><p>Today we integrate with LeagueLeader for BullShooter dartboard systems. Using something else, or a spreadsheet? Tell us. Other sources are added on request.</p></div>
+<div class="card"><h3>We build your stats site</h3><p>Your league name and colors, organized by season, night and division, on your own web address if you like.</p></div>
+<div class="card"><h3>Share it and relax</h3><p>Hand out the link or QR code. Stats refresh automatically all season, and new seasons are a quick config change.</p></div></div></div></section>
+
+<section id="demo"><div class="w"><div class="sh"><h2>See how it looks</h2><p>Try it yourself: switch sports and divisions, save a league, search and sort players, check the schedule and venues, and pick your team.</p></div>
+<div class="demo"><div class="dt" role="group" aria-label="Sport" id="sp"></div><div class="dt" role="group" aria-label="Division" id="dv"></div>
+<div class="dt" role="group" aria-label="My leagues" id="ml"></div><div class="dt" role="group" aria-label="Sections" id="tbs"></div><div id="dp"></div>
+<p class="note">Sample data for illustration only. Your site shows your league’s real standings and stats.</p></div>
+<div style="margin-top:36px"><h3 style="margin-bottom:12px">Built for any league with standings and stats</h3><div class="chips"><span class="chip live">Darts · live today</span><span class="chip">Pool and billiards</span><span class="chip">Bowling</span><span class="chip">Cornhole</span><span class="chip">Shuffleboard</span><span class="chip">Pickleball</span><span class="chip">Softball</span><span class="chip">Trivia</span></div><p class="note">Darts is running live now. Other sports are configured with their own stats during setup.</p></div></div></section>
+
+<section id="pricing" style="background:var(--card);border-block:1px solid var(--line)"><div class="w"><div class="sh"><h2>Simple pricing</h2><p>Pay for the divisions you run. No contracts, cancel any time.</p></div>
+<!-- EDIT PRICES HERE: these amounts are examples and should be set to your real pricing -->
+<div class="grid"><div class="card price"><h3>Starter</h3><div class="amt">$49<small> / month</small></div><p>For a single division.</p><ul><li>1 division, all pages</li><li>Hourly updates</li><li>Link and QR code</li></ul><a class="btn alt" href="#contact" style="color:var(--ink)">Get started</a></div>
+<div class="card price pop"><span class="tag">Most popular</span><h3>League</h3><div class="amt">$99<small> / month</small></div><p>For a league with several nights.</p><ul><li>Up to 10 divisions</li><li>Season, night and division selector</li><li>Your name and colors</li><li>Email support</li></ul><a class="btn" href="#contact">Request a demo</a></div>
+<div class="card price"><h3>Operator</h3><div class="amt">Custom</div><p>For multi-venue and multi-sport operators.</p><ul><li>Unlimited divisions</li><li>Your own domain</li><li>Custom sports and stats</li><li>Priority setup</li></ul><a class="btn alt" href="#contact" style="color:var(--ink)">Talk to us</a></div></div></div></section>
+
+<section id="faq"><div class="w" style="max-width:760px"><div class="sh"><h2>Questions</h2></div>
+<details><summary>What scoring software do you work with?</summary><p>Today we read LeagueLeader share reports. If you use another system or keep stats in a spreadsheet, tell us in the form below and we will look at connecting it.</p></details>
+<details><summary>Do players need an app or an account?</summary><p>No. They open a link or scan a QR code. They can add the page to their Home Screen if they want it to feel like an app.</p></details>
+<details><summary>How fresh are the numbers?</summary><p>The site refreshes about every hour by default. It can show new data only as fast as your scoring system publishes it.</p></details>
+<details><summary>Whose data is it?</summary><p>Yours. We display the standings and stats your league already publishes, and we do not sell them.</p></details>
+<details><summary>Can it use our name, colors and web address?</summary><p>Yes. Branding and a custom domain are part of setup.</p></details>
+<details><summary>What happens if a source stops working?</summary><p>The site keeps showing the last good data, and we are alerted so the connection can be fixed.</p></details></div></section>
+
+<section id="contact" style="background:#0e141f;color:#eef2f8"><div class="w contact"><div><div class="eyebrow">Get started</div><h2 style="font-size:clamp(28px,4vw,40px);font-weight:800;margin:10px 0 14px">Let’s put your league on every phone</h2><p style="color:#b8c3d4;font-size:18px">Tell us about your league and we will reply with a walkthrough and a quote. It takes about a minute.</p></div>
+<form id="f" novalidate style="color:var(--ink)"><label>Your name<input name="name" required autocomplete="name"></label><label>Email<input name="email" type="email" required autocomplete="email"></label>
+<label class="full">League or company<input name="league" required autocomplete="organization"></label>
+<label>Sport<select name="sport"><option>Darts</option><option>Pool / billiards</option><option>Bowling</option><option>Cornhole</option><option>Other</option></select></label>
+<label>Divisions<select name="divisions"><option>1–3</option><option>4–10</option><option>11–25</option><option>25+</option></select></label>
+<label class="full">Scoring software<select name="software"><option>LeagueLeader</option><option>Spreadsheet</option><option>Another system</option><option>Not sure</option></select></label>
+<label class="full">Anything we should know? (optional)<textarea name="message"></textarea></label>
+<input class="hp" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="full"><button class="btn" id="sb" type="submit">Request a demo</button></div><div class="full" id="fs" role="status" aria-live="polite"></div>
+<p class="note full" style="margin:0">We only use your details to reply about <span data-brand>TeamStatsPlus</span>.</p></form></div></section></main>
+<footer><div class="w"><span>© <span id="yr"></span> <span data-brand>TeamStatsPlus</span></span><a href="#" id="em">Email us</a></div></footer>
+<script>
+/* ---- EDIT THESE ---- */
+const CONFIG={name:"TeamStatsPlus",email:"anthonylkelly@gmail.com",formEndpoint:""}; // formEndpoint: e.g. a Formspree URL
+/* -------------------- */
+const $=s=>document.querySelector(s);
+document.querySelectorAll("[data-brand]").forEach(e=>e.textContent=CONFIG.name);document.title=CONFIG.name+" – Live stats sites for league operators";
+$("#yr").textContent=new Date().getFullYear();$("#em").href="mailto:"+CONFIG.email;
+const T={A:[["Bull Runners",12,3],["Triple Threat",11,4],["Oche Ness",9,6],["Flight Club",8,7],["Last Orders",5,10],["Gutter Balls",3,12]],B:[["Dart Side",13,2],["Hat Tricks",10,5],["Arrow Heads",9,6],["Nine Darters",7,8],["Big Fish",6,9],["Chalk Talk",4,11]],C:[["Lucky Leg",11,4],["Third Leg",10,5],["Robin Hoods",8,7],["Bust Brothers",7,8],["Grand Slam",5,10],["The Closers",4,11]]};
+const FN=["Alex","Sam","Jordan","Casey","Riley","Morgan","Taylor","Jamie","Chris","Pat","Drew","Dana"],LN=["Miller","Reyes","Nguyen","Brooks","Patel","Ortiz","Kelly","Foster","Shaw","Lopez","Hayes","Dunn"];
+const VEN=["Tryon Tavern","Corner Pocket","Gameday Bar","The Retreat"],TEL=["(555) 010-0142","(555) 010-0178","(555) 010-0121","(555) 010-0190"],MED=["🥇","🥈","🥉"];
+const S={Darts:["MPR",(w,l)=>(1.9+w/(w+l)*1.4).toFixed(2),v=>(1.8+v*.014).toFixed(2),"MPR"],Pool:["Racks won",(w,l)=>w*4+l,v=>Math.round(v/9),"Run-outs"],Bowling:["Team avg",(w,l)=>Math.round(520+w/(w+l)*180),v=>Math.round(130+v*.9),"Average"]};
+const TB=["Standings","Players","Schedule","Locations","My Team"];
+let sp="Darts",dv="A",tab=0,q="",srt=["p",-1],saved=[["Darts","A"]],my=0;
+const isSaved=()=>saved.some(x=>x[0]==sp&&x[1]==dv),pct=(w,l)=>w/(w+l)*100,bar=p=>`<span class="bb"><i style="width:${p}%"></i></span>`;
+const PL=()=>T[dv].flatMap(([t,w,l],i)=>[0,1].map(j=>{const p=Math.round(pct(w,l))+(j?-7:4);return{n:FN[(i*2+j+dv.charCodeAt(0))%12]+" "+LN[(i*3+j*5+dv.charCodeAt(0))%12],t,p,v:p+((i*5+j*3)%11)-5}}));
+const tbl=(h,b,id="")=>`<div class="tw"><table><thead><tr>${h}</tr></thead><tbody id="${id}">${b}</tbody></table></div>`;
+function pRows(){const[k,d]=srt;return PL().filter(r=>r.n.toLowerCase().includes(q)).sort((a,b)=>(typeof a[k]=="string"?a[k].localeCompare(b[k]):a[k]-b[k])*d).map(r=>`<tr><td>${r.n}</td><td>${r.t}</td><td>${r.p}%</td><td>${S[sp][2](r.v)}</td></tr>`).join("")||'<tr><td colspan="4">No players match.</td></tr>'}
+function panel(){const t=T[dv],[h,f]=S[sp];
+ if(tab==0)return tbl(`<th>Team</th><th>W</th><th>L</th><th>Win %</th><th>${h}</th>`,t.map(([n,w,l],i)=>`<tr><td>${MED[i]||""} ${n}</td><td>${w}</td><td>${l}</td><td>${pct(w,l).toFixed(0)}%${bar(pct(w,l))}</td><td>${f(w,l)}</td></tr>`).join(""));
+ if(tab==1){const hd=[["n","Player"],["t","Team"],["p","Win %"],["v",S[sp][3]]].map(([k,l])=>`<th><button class="sb" data-k="${k}">${l}${srt[0]==k?(srt[1]<0?" ▼":" ▲"):""}</button></th>`).join("");
+  const imp=PL().filter((_,i)=>i%4==1).slice(0,3).map((r,i)=>`<div class="li"><div>${r.n} <span>${r.t}</span></div><b>▲ +${(+S[sp][2](r.v+5+i)-+S[sp][2](r.v)).toFixed(sp=="Darts"?2:0)}</b></div>`).join("");
+  return `<div class="dt"><input id="pq" type="search" placeholder="Search players" aria-label="Search players" value="${q}"></div>`+tbl(hd,pRows(),"pb")+`<div class="mini"><b>Most improved this week</b>${imp}</div>`}
+ if(tab==2){const m=[];for(let i=0;i+1<t.length;i+=2)m.push([t[i][0],t[i+1][0],VEN[(i/2)%4]]);
+  return `<div class="mini"><b>Next match night</b> · Thursday, Oct 8 · 7:30 PM</div>`+m.map(x=>`<div class="li"><div><b>${x[0]}</b> vs ${x[1]}</div><span>${x[2]}</span></div>`).join("")}
+ if(tab==3)return `<div class="g2">${VEN.map((v,i)=>`<div class="mini" style="margin:0"><b>${v}</b><div class="note" style="margin:4px 0">${t.filter((_,j)=>j%4==i).map(x=>x[0]).join(", ")||"No teams this division"}</div><div>📞 ${TEL[i]}</div></div>`).join("")}</div><p class="note">On a real site, phone numbers are tap-to-call and addresses open in maps.</p>`;
+ const[n,w,l]=t[my],o=t[my^1];
+ return `<div class="dt"><select id="mt" aria-label="Choose your team">${t.map((x,i)=>`<option value="${i}" ${i==my?"selected":""}>${x[0]}</option>`).join("")}</select></div><div class="g2"><div class="mini" style="margin:0"><b>${n}</b><div class="li"><span>Record</span><b>${w}–${l}</b></div><div class="li"><span>Win %</span><b>${pct(w,l).toFixed(0)}%</b></div><div class="li"><span>Rank</span><b>#${my+1} of ${t.length}</b></div></div><div class="mini" style="margin:0;border-color:var(--acc)"><b>Next match</b><div style="margin-top:6px">vs ${o[0]}</div><div class="note" style="margin:2px 0">Thursday, Oct 8 · ${VEN[(my>>1)%4]}</div></div></div><div class="mini"><b>Teammates</b>${PL().filter(r=>r.t==n).map(r=>`<div class="li"><div>${r.n}</div><span>${S[sp][3]} ${S[sp][2](r.v)} · ${r.p}% wins</span></div>`).join("")}</div>`}
+function draw(){
+ $("#sp").innerHTML=Object.keys(S).map(k=>`<button aria-pressed="${k==sp}" data-s="${k}">${k}</button>`).join("");
+ $("#dv").innerHTML=Object.keys(T).map(k=>`<button aria-pressed="${k==dv}" data-d="${k}">Division ${k}</button>`).join("");
+ $("#ml").innerHTML=`<button aria-pressed="${isSaved()}" data-save="1">${isSaved()?"★ Saved":"☆ Save league"}</button>`+(saved.length?`<span class="lbl">My leagues:</span>`:"")+saved.map(([s,d])=>`<button aria-pressed="${s==sp&&d==dv}" data-go="${s}|${d}">${s} · Div ${d}</button>`).join("");
+ $("#tbs").className="dt tabs";$("#tbs").innerHTML=TB.map((k,i)=>`<button aria-pressed="${i==tab}" data-t="${i}">${k}</button>`).join("");
+ $("#dp").innerHTML=panel()}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+ if(d.s)sp=d.s;else if(d.d)dv=d.d;else if(d.t)tab=+d.t;
+ else if(d.save!=null)saved=isSaved()?saved.filter(x=>!(x[0]==sp&&x[1]==dv)):[...saved,[sp,dv]];
+ else if(d.go)[sp,dv]=d.go.split("|");
+ else if(d.k)srt=srt[0]==d.k?[d.k,-srt[1]]:[d.k,d.k=="n"||d.k=="t"?1:-1];
+ else return;draw()});
+document.addEventListener("input",e=>{if(e.target.id=="pq"){q=e.target.value.toLowerCase();$("#pb").innerHTML=pRows()}});
+document.addEventListener("change",e=>{if(e.target.id=="mt"){my=+e.target.value;draw()}});
+draw();
+$("#f").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,st=$("#fs"),sb=$("#sb");
+ if(f._gotcha.value)return;if(!f.checkValidity()){f.reportValidity();return}
+ const d=Object.fromEntries(new FormData(f));delete d._gotcha;
+ if(CONFIG.formEndpoint){sb.disabled=true;st.textContent="Sending…";
+  try{const r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)});if(!r.ok)throw 0;f.reset();st.textContent="Thanks! We’ll reply by email soon."}
+  catch(x){st.textContent="Something went wrong. Please email us at "+CONFIG.email+"."}sb.disabled=false}
+ else{const body=Object.entries(d).map(([k,v])=>k+": "+v).join("\n");location.href="mailto:"+CONFIG.email+"?subject="+encodeURIComponent("Demo request: "+d.league)+"&body="+encodeURIComponent(body);st.textContent="Opening your email app…"}});
+</script></body></html>
