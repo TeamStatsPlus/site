@@ -215,7 +215,8 @@ const CONFIG={
  formEndpoint:"https://formspree.io/f/mbggyepe",
  formKey:"",
  /* Stripe Payment Links (create in the Stripe dashboard, paste the https://buy.stripe.com/... links) */
- stripe:{starter:"",league:""},
+ stripe:{starter:"https://buy.stripe.com/5kQ8wQ2jug5ffSa7wx8so00",league:"https://buy.stripe.com/fZufZi7DOcT3fSabMN8so01"}, /* Stripe Payment Links for the Subscribe buttons */
+ checkoutEndpoint:"", /* optional: a checkout function such as /api/create-checkout-session; not needed with Payment Links */
  billingPortal:"" /* Stripe customer portal link, optional */
 };
 const $=s=>document.querySelector(s);
@@ -265,7 +266,12 @@ document.addEventListener("change",e=>{if(e.target.id=="mt"){my=+e.target.value;
 draw();
 /* payments + form */
 const L=CONFIG.stripe||{};
-[["starter","#buy-starter"],["league","#buy-league"]].forEach(([k,id])=>{if(L[k]){const a=$(id);a.href=L[k];a.textContent="Subscribe";a.rel="noopener"}});
+const startCheckout=async(a,plan)=>{const t=a.textContent;a.textContent="Opening checkout…";
+ try{const r=await fetch(CONFIG.checkoutEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({plan})});const j=await r.json();if(!r.ok||!j.url)throw 0;location.href=j.url}
+ catch(x){a.textContent=t;location.hash="contact"}};
+[["starter","#buy-starter"],["league","#buy-league"]].forEach(([k,id])=>{const a=$(id);
+ if(L[k]){a.href=L[k];a.textContent="Subscribe";a.rel="noopener"}
+ else if(CONFIG.checkoutEndpoint){a.textContent="Subscribe";a.addEventListener("click",e=>{e.preventDefault();startCheckout(a,k)})}});
 if(CONFIG.billingPortal){const b=$("#bp");b.href=CONFIG.billingPortal;b.hidden=false}
 $("#f").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,st=$("#fs"),sb=$("#sb");
  if(f._gotcha.value)return;if(!f.checkValidity()){f.reportValidity();return}
