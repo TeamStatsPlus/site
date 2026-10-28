@@ -212,7 +212,7 @@ const CONFIG={
  /* Form delivery (pick one service and fill it in):
     Formspree  -> formEndpoint:"https://formspree.io/f/xxxxxxxx"
     Web3Forms  -> formEndpoint:"https://api.web3forms.com/submit", formKey:"your-access-key" */
- formEndpoint:"",
+ formEndpoint:"https://formspree.io/f/mbggyepe",
  formKey:"",
  /* Stripe Payment Links (create in the Stripe dashboard, paste the https://buy.stripe.com/... links) */
  stripe:{starter:"",league:""},
@@ -271,6 +271,7 @@ $("#f").addEventListener("submit",async e=>{e.preventDefault();const f=e.target,
  if(f._gotcha.value)return;if(!f.checkValidity()){f.reportValidity();return}
  if(!CONFIG.formEndpoint){st.textContent="Our form isn’t connected yet. Please email us at "+CONFIG.email+".";return}
  const d=Object.fromEntries(new FormData(f));delete d._gotcha;
+ if(CONFIG.formEndpoint.includes("formspree.io"))d._subject="New "+CONFIG.name+" demo request: "+d.league;
  if(CONFIG.formKey){d.access_key=CONFIG.formKey;d.subject="New "+CONFIG.name+" demo request: "+d.league;d.from_name=CONFIG.name+" website"}
  sb.disabled=true;st.textContent="Sending…";
  try{const r=await fetch(CONFIG.formEndpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(d)});
